@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/FindMyPhone.iml" filepath="$PROJECT_DIR$/.idea/modules/FindMyPhone.iml" group="FindMyPhone" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/FindMyPhone-app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/FindMyPhone-app.iml" group="FindMyPhone/app" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/StartUp.iml" filepath="$PROJECT_DIR$/.idea/StartUp.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+    </modules>
+  </component>
+</project>
