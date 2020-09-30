@@ -10,7 +10,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:116966358976:android:c7e388f83f7893d3",
         "android_client_info": {
-          "package_name": "com.hussein.findmyphone"
+          "package_name": "com.fclarke.findmyphone"
         }
       },
       "oauth_client": [
@@ -18,7 +18,7 @@
           "client_id": "116966358976-9hmm102hbvirq776tv9tkrl8e4nr7vmi.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.hussein.findmyphone",
+            "package_name": "com.fclarke.findmyphone",
             "certificate_hash": "76a07b52241638f10fb6d3cf8f6b855f929169dc"
           }
         },

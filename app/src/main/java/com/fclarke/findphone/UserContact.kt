@@ -1,10 +1,6 @@
 package com.fclarke.findphone
 
- class  UserContact{
-    var name:String?=null
-     var phoneNumber:String?=null
-     constructor(name:String,phoneNumber:String){
-         this.name=name
-         this.phoneNumber=phoneNumber
-     }
+ class  UserContact(name: String, phoneNumber: String) {
+    var name:String?= name
+     var phoneNumber:String?= phoneNumber
  }
