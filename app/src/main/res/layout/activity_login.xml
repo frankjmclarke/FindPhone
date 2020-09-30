@@ -9,17 +9,18 @@
     <EditText
         android:id="@+id/etPhoneNumber"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
+        android:layout_height="45dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="128dp"
+        android:layout_marginTop="200dp"
+        android:layout_marginEnd="8dp"
         android:ems="10"
-        android:hint="Enter your phone number"
+        android:hint="@string/enter_your_phone_number"
         android:inputType="phone"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.503"
+        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:autofillHints="" />
 
     <Button
         android:id="@+id/buRegisetr"
@@ -30,8 +31,19 @@
         android:layout_marginTop="56dp"
         android:background="@android:color/holo_green_dark"
         android:onClick="buRegisterEvent"
-        android:text="Register"
+        android:text="@string/register"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/etPhoneNumber" />
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="186dp"
+        android:layout_height="112dp"
+        android:layout_marginTop="27dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/dmap"
+        android:contentDescription="@string/todo" />
 </androidx.constraintlayout.widget.ConstraintLayout>

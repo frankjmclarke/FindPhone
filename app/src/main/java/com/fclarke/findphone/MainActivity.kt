@@ -168,12 +168,12 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    val CONTACT_CODE =123
-    fun checkContactPermission(){
+    private val contactCode =123
+    private fun checkContactPermission(){
         if(Build.VERSION.SDK_INT>=23){
             if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.READ_CONTACTS) !=
                     PackageManager.PERMISSION_GRANTED ){
-                requestPermissions(arrayOf(android.Manifest.permission.READ_CONTACTS), CONTACT_CODE)
+                requestPermissions(arrayOf(android.Manifest.permission.READ_CONTACTS), contactCode)
                 return
             }
         }
@@ -183,14 +183,14 @@ class MainActivity : AppCompatActivity() {
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
 
         when (requestCode) {
-            CONTACT_CODE-> {
+            contactCode-> {
                 if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     loadContact()
                 } else {
                     Toast.makeText(this, "Cannot acces to contact ", Toast.LENGTH_LONG).show()
                 }
             }
-            LOCATION_CODE->{
+            locationCode->{
                 if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     getUserLocation()
                 } else {
@@ -204,7 +204,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     var listOfContacts=HashMap<String,String>()
-    fun loadContact() {
+    private fun loadContact() {
 
         try{
             listOfContacts.clear()
@@ -222,12 +222,12 @@ class MainActivity : AppCompatActivity() {
 
 
 
-    private val LOCATION_CODE =124
+    private val locationCode =124
     private fun checkLocationPermission(){
         getUserLocation()
     }
 
-    fun getUserLocation(){
+    private fun getUserLocation(){
 
         // Start service
         if(!MyService.isServiceRunning){

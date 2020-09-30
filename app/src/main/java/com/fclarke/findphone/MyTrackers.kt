@@ -17,60 +17,59 @@ import kotlinx.android.synthetic.main.activity_my_trackers.*
 import kotlinx.android.synthetic.main.contact_ticket.view.*
 
 class MyTrackers : AppCompatActivity() {
-  var adapter:ContactAdapter?=null
-    var listOfContact=ArrayList<UserContact>()
-    var userData:UserData?=null
+    private var adapter: ContactAdapter? = null
+    private var listOfContact = ArrayList<UserContact>()
+    private var userData: UserData? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_my_trackers)
-        userData= UserData(applicationContext)
+        userData = UserData(applicationContext)
         //dummpyData()
-        adapter = ContactAdapter(this,listOfContact)
-        lvContactList.adapter= adapter
-       lvContactList.onItemClickListener= AdapterView.OnItemClickListener{
-           parent,view,postion,id ->
-           val userInfo =listOfContact[postion]
-           UserData.myTrackers.remove(userInfo.phoneNumber)
-           refreshData()
+        adapter = ContactAdapter(this, listOfContact)
+        lvContactList.adapter = adapter
+        lvContactList.onItemClickListener = AdapterView.OnItemClickListener { _, _, postion, _ ->
+            val userInfo = listOfContact[postion]
+            UserData.myTrackers.remove(userInfo.phoneNumber)
+            refreshData()
 
-           //save to shared ref
-           userData!!.saveContactInfo()
+            //save to shared ref
+            userData!!.saveContactInfo()
 
-           // remove to Realtime database
-           val mDatabase = FirebaseDatabase.getInstance().reference
-           val userData= UserData(applicationContext)
-           mDatabase.child("Users").child(userInfo.phoneNumber!!).child("Finders").child(userData.loadPhoneNumber()).removeValue()
+            // remove to Realtime database
+            val mDatabase = FirebaseDatabase.getInstance().reference
+            val userData = UserData(applicationContext)
+            mDatabase.child("Users").child(userInfo.phoneNumber!!).child("Finders").child(userData.loadPhoneNumber()).removeValue()
 
-       }
+        }
 
 
         userData!!.loadContactInfo()
         refreshData()
     }
 
-    //for debug first time
-    fun dummpyData(){
+    /*for debug first time
+    fun dummpyData() {
         //listOfContact.add(UserContact("hussein","3434"))
         //listOfContact.add(UserContact("jena","344343"))
         //listOfContact.add(UserContact("laya","434543"))
-    }
+    }*/
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
 
-        val inflater=menuInflater
-        inflater.inflate(R.menu.tracker_menu,menu)
+        val inflater = menuInflater
+        inflater.inflate(R.menu.tracker_menu, menu)
         return true
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        when(item!!.itemId){
-            R.id.finishActivity ->{
+        when (item!!.itemId) {
+            R.id.finishActivity -> {
                 finish()
             }
-            R.id.addContact ->{
+            R.id.addContact -> {
                 checkPermission()
             }
-            else ->{
+            else -> {
                 return super.onOptionsItemSelected(item)
             }
         }
@@ -78,15 +77,15 @@ class MyTrackers : AppCompatActivity() {
         return true
     }
 
-    val CONTACT_CODE =123
-    fun checkPermission(){
+    private val cONTACTCODE = 123
+    private fun checkPermission() {
 
-        if(Build.VERSION.SDK_INT>=23){
+        if (Build.VERSION.SDK_INT >= 23) {
 
             if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.READ_CONTACTS) !=
-                    PackageManager.PERMISSION_GRANTED ){
+                    PackageManager.PERMISSION_GRANTED) {
 
-                requestPermissions(arrayOf(android.Manifest.permission.READ_CONTACTS), CONTACT_CODE)
+                requestPermissions(arrayOf(android.Manifest.permission.READ_CONTACTS), cONTACTCODE)
                 return
             }
         }
@@ -95,63 +94,62 @@ class MyTrackers : AppCompatActivity() {
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
 
-       when (requestCode) {
-           CONTACT_CODE-> {
-               if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                   pickContact()
-               } else {
-                   Toast.makeText(this, "Cannot acces to contact ", Toast.LENGTH_LONG).show()
-               }
-           }
-           else ->{
-                   super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-               }
+        when (requestCode) {
+            cONTACTCODE -> {
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    pickContact()
+                } else {
+                    Toast.makeText(this, "Cannot acces to contact ", Toast.LENGTH_LONG).show()
+                }
+            }
+            else -> {
+                super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+            }
 
-       }
+        }
 
 
     }
 
-    val PCIK_CODE=1234
-    fun pickContact() {
+    private val pCIKCODE = 1234
+    private fun pickContact() {
 
         val intent = Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI)
-        startActivityForResult(intent, PCIK_CODE)
+        startActivityForResult(intent, pCIKCODE)
 
 
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
 
-        when (requestCode){
-            PCIK_CODE ->{
-                if (resultCode== AppCompatActivity.RESULT_OK){
+        when (requestCode) {
+            pCIKCODE -> {
+                if (resultCode == RESULT_OK) {
 
-                    val contactData=data!!.data
-                    val c= contentResolver.query(contactData!!,null,null,null,null)
+                    val contactData = data!!.data
+                    val c = contentResolver.query(contactData!!, null, null, null, null)
 
-                    if (c!!.moveToFirst()){
+                    if (c!!.moveToFirst()) {
 
-                        val id= c!!.getString(c!!.getColumnIndexOrThrow(ContactsContract.Contacts._ID))
-                        val hasPhone= c!!.getString(c.getColumnIndexOrThrow(ContactsContract.Contacts.HAS_PHONE_NUMBER))
+                        val id = c.getString(c.getColumnIndexOrThrow(ContactsContract.Contacts._ID))
+                        val hasPhone = c.getString(c.getColumnIndexOrThrow(ContactsContract.Contacts.HAS_PHONE_NUMBER))
 
-                        if (hasPhone.equals("1")){
-                            val phones= contentResolver.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI,null
-                            , ContactsContract.CommonDataKinds.Phone.CONTACT_ID + "=" + id, null,null)
+                        if (hasPhone == "1") {
+                            val phones = contentResolver.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, ContactsContract.CommonDataKinds.Phone.CONTACT_ID + "=" + id, null, null)
 
                             phones!!.moveToFirst()
-                            var phoneNumber = phones!!.getString(phones!!.getColumnIndex("data1"))
+                            var phoneNumber = phones.getString(phones.getColumnIndex("data1"))
                             val name = c.getString(c.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME))
 
-                            phoneNumber=UserData.formatPhoneNumber(phoneNumber)
-                            UserData.myTrackers.put(phoneNumber,name)
+                            phoneNumber = UserData.formatPhoneNumber(phoneNumber)
+                            UserData.myTrackers.put(phoneNumber, name)
                             refreshData()
                             //save to shared ref
                             userData!!.saveContactInfo()
 
                             // save to Realtime database
                             val mDatabase = FirebaseDatabase.getInstance().reference
-                            val userData= UserData(applicationContext)
+                            val userData = UserData(applicationContext)
                             mDatabase.child("Users").child(phoneNumber).child("Finders").child(userData.loadPhoneNumber()).setValue(true)
 
                         }
@@ -161,48 +159,43 @@ class MyTrackers : AppCompatActivity() {
                 }
 
             }
-            else ->{
+            else -> {
                 super.onActivityResult(requestCode, resultCode, data)
             }
         }
 
     }
 
-
-   fun refreshData(){
-       listOfContact.clear()
-       for ((key,value) in UserData.myTrackers){
-           listOfContact.add(UserContact(value,key))
-       }
-
-       adapter!!.notifyDataSetChanged()
-   }
-
-    class ContactAdapter:BaseAdapter {
-        var listOfContact=ArrayList<UserContact>()
-        var context:Context?=null
-        constructor(context:Context,listOfContact:ArrayList<UserContact>){
-            this.context=context
-            this.listOfContact=listOfContact
+    private fun refreshData() {
+        listOfContact.clear()
+        for ((key, value) in UserData.myTrackers) {
+            listOfContact.add(UserContact(value, key))
         }
+
+        adapter!!.notifyDataSetChanged()
+    }
+
+    class ContactAdapter(context: Context, private var listOfContact: ArrayList<UserContact>) : BaseAdapter() {
+        var context: Context? = context
+
         override fun getView(p0: Int, p1: View?, p2: ViewGroup?): View {
-             val userContact = listOfContact[p0]
+            val userContact = listOfContact[p0]
             val inflator = context!!.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-            val contactTicketView= inflator.inflate(R.layout.contact_ticket,null)
-            contactTicketView.tvName.text= userContact.name
-            contactTicketView.tvPhoneNumber.text= userContact.phoneNumber
+            val contactTicketView = inflator.inflate(R.layout.contact_ticket, null)
+            contactTicketView.tvName.text = userContact.name
+            contactTicketView.tvPhoneNumber.text = userContact.phoneNumber
 
             return contactTicketView
         }
 
         override fun getItem(p0: Int): Any {
 
-         return listOfContact[p0]
-         }
+            return listOfContact[p0]
+        }
 
         override fun getItemId(p0: Int): Long {
-        return p0.toLong()
-          }
+            return p0.toLong()
+        }
 
         override fun getCount(): Int {
 

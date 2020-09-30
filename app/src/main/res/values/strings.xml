@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">Find Your Phone</string>
     <string name="title_activity_maps">Map</string>
+    <string name="register">Register</string>
+    <string name="enter_your_phone_number">Enter your phone number</string>
+    <string name="todo">TODO</string>
 </resources>
